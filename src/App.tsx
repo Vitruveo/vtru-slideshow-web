@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { APIResponseInterface, ArtInterface } from "./types";
 import { Loading } from "./components/Loading";
 import { HorizontalLayout } from "./layouts/HorizontalLayout";
-import { buildAssetURL, getSeconds, getSlideshowId } from "./utils";
+import { buildAssetURL, getSlideshowId } from "./utils";
 import { VerticalLayout } from "./layouts/VerticalLayout";
 import { API_URL, SEARCH_URL } from "./constants";
 
 export default function App() {
   const [arts, setArts] = useState<ArtInterface[]>([]);
+  const [time, setTime] = useState<number>(0);
+  const [display, setDisplay] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [currentArtIndex, setCurrentArtIndex] = useState(0);
 
@@ -23,7 +25,9 @@ export default function App() {
         );
         const { data } = (await response.json()) as APIResponseInterface;
 
-        setArts(data);
+        setArts(data.assets);
+        setTime(data.interval);
+        setDisplay(data.display.toLowerCase());
 
         setTimeout(() => {
           setIsLoading(false);
@@ -36,13 +40,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const isLastArt = currentArtIndex === arts.length - 1;
-      const nextIndex = isLastArt ? 0 : currentArtIndex + 1;
-      setCurrentArtIndex(nextIndex);
-    }, getSeconds() * 1000);
-    return () => clearInterval(interval);
-  }, [currentArtIndex, arts, isLoading, getSeconds]);
+    if (arts.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentArtIndex((prevIndex) => (prevIndex + 1) % arts.length);
+      }, time * 1000);
+      return () => clearInterval(interval);
+    }
+  }, [arts, time]);
 
   if (isLoading || arts.length < 1) {
     return <Loading />;
@@ -55,16 +59,17 @@ export default function App() {
   const nextArtIndex =
     currentArtIndex === arts.length - 1 ? 0 : currentArtIndex + 1;
 
-  const preAssetImage = buildAssetURL(arts[nextArtIndex].image);
+  const preAssetImage = buildAssetURL(arts[nextArtIndex]?.image);
   const preAvatarImage = arts[nextArtIndex]?.avatar;
 
-  if (arts[currentArtIndex].orientation === "vertical") {
+  if (currentArt.orientation === "vertical") {
     return (
       <VerticalLayout
         {...currentArt}
         preAsset={preAssetImage}
         QRCodeValue={QRCodeValue}
         preAvatar={preAvatarImage}
+        display={display}
       />
     );
   }
@@ -75,6 +80,7 @@ export default function App() {
       preAsset={preAssetImage}
       QRCodeValue={QRCodeValue}
       preAvatar={preAvatarImage}
+      display={display}
     />
   );
 }

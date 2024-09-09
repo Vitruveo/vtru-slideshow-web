@@ -18,6 +18,7 @@ export const HorizontalLayout = ({
   QRCodeValue,
   preAsset,
   preAvatar,
+  display,
 }: LayoutInterface) => {
   const assetSrc = buildAssetURL(image);
 
@@ -33,33 +34,35 @@ export const HorizontalLayout = ({
 
       <BackgroundOverlay src={assetSrc} />
 
-      <main className="flex flex-col w-[80vw]">
+      <main className="flex flex-col w-[80vw] mx-auto">
         <PopupAnimation className="h-full" key={Date.now()}>
           <MediaRenderer src={assetSrc} />
         </PopupAnimation>
       </main>
 
-      <aside className="w-[20vw] flex flex-col justify-between gap-8">
-        <SlideLeftAnimation delay={0.2} key={Date.now()}>
-          <div className="flex flex-col gap-4 items-center">
-            <img
-              src="vitruveo-logo.png"
-              className="flex-1 object-contain max-w-[50%]"
-            />
-            <CreatorInformation
-              className="max-w-[12vw] self-center"
-              username={username}
-              avatar={avatar}
-              preAvatar={preAvatar}
-            />
-            <Description description={title} />
-          </div>
-        </SlideLeftAnimation>
+      {display !== "hide" && (
+        <aside className="w-[20vw] flex flex-col justify-between gap-8">
+          <SlideLeftAnimation delay={0.2} key={Date.now()}>
+            <div className="flex flex-col gap-4 items-center">
+              <img
+                src="vitruveo-logo.png"
+                className="flex-1 object-contain max-w-[50%]"
+              />
+              <CreatorInformation
+                className="max-w-[12vw] self-center"
+                username={username}
+                avatar={avatar}
+                preAvatar={preAvatar}
+              />
+              <Description description={title} />
+            </div>
+          </SlideLeftAnimation>
 
-        <PopupAnimation key={Date.now() + 1}>
-          <QRCode value={QRCodeValue} />
-        </PopupAnimation>
-      </aside>
+          <PopupAnimation key={Date.now() + 1}>
+            <QRCode value={QRCodeValue} />
+          </PopupAnimation>
+        </aside>
+      )}
     </LayoutContainer>
   );
 };

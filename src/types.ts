@@ -18,11 +18,16 @@ export interface APIResponseInterface {
   code: string;
   message: string;
   transaction: string;
-  data: ArtInterface[];
+  data: {
+    display: string;
+    interval: number;
+    assets: ArtInterface[];
+  };
 }
 
 export interface LayoutInterface extends Omit<ArtInterface, "_id"> {
   QRCodeValue: string;
   preAsset: string;
   preAvatar?: string;
+  display: string;
 }
