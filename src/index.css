@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: black;
+}
+
+#root {
+  height: 100%;
+}
+
+@layer base {
+  p {
+    @apply text-white;
+  }
+  h1 {
+    @apply text-white text-2xl font-semibold;
+  }
+  h2 {
+    @apply text-white text-xl font-semibold;
+  }
+}
