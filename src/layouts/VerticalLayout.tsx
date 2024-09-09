@@ -1,4 +1,4 @@
-import { PopupAnimation } from "../animations";
+import { PopupAnimation, SlideLeftAnimation } from "../animations";
 import {
   BackgroundOverlay,
   MediaRenderer,
@@ -11,16 +11,18 @@ import { LayoutInterface } from "../types";
 import { buildAssetURL } from "../utils";
 
 export const VerticalLayout = ({
-  asset,
-  creator,
+  image,
+  title,
+  username,
+  avatar,
   QRCodeValue,
   preAsset,
   preAvatar,
 }: LayoutInterface) => {
-  const assetSrc = buildAssetURL(asset.image);
+  const assetSrc = buildAssetURL(image);
 
   return (
-    <LayoutContainer className="px-0 pb-0">
+    <LayoutContainer>
       <img
         src={preAsset}
         alt="pre-asset"
@@ -28,31 +30,36 @@ export const VerticalLayout = ({
           display: "none",
         }}
       />
+
       <BackgroundOverlay src={assetSrc} />
+
       <main className="flex-1 grid grid-rows-[minmax(50%,auto),auto]">
         <PopupAnimation className="mx-auto w-fit" key={Date.now()}>
           <MediaRenderer src={assetSrc} />
         </PopupAnimation>
-        <footer className="flex justify-center p-4 mt-4 bg-[rgba(0,0,0,0.67)]">
-          <div className="flex justify-between items-center w-full max-w-screen-xl">
-            <PopupAnimation key={Date.now() + 1}>
-              <CreatorInformation
-                className="w-[100px]"
-                username={creator.username}
-                avatar={creator.avatar}
-                preAvatar={preAvatar}
-              />
-            </PopupAnimation>
-            <div className="flex flex-col gap-2">
-              <Description description={asset.title} />
-            </div>
-
-            <PopupAnimation key={Date.now() + 2}>
-              <QRCode value={QRCodeValue} />
-            </PopupAnimation>
-          </div>
-        </footer>
       </main>
+
+      <aside className="w-[20vw] flex flex-col justify-between gap-8">
+        <SlideLeftAnimation delay={0.2} key={Date.now()}>
+          <div className="flex flex-col gap-4 items-center">
+            <img
+              src="vitruveo-logo.png"
+              className="flex-1 object-contain max-w-[50%]"
+            />
+            <CreatorInformation
+              className="max-w-[12vw] self-center"
+              username={username}
+              avatar={avatar}
+              preAvatar={preAvatar}
+            />
+            <Description description={title} />
+          </div>
+        </SlideLeftAnimation>
+
+        <PopupAnimation key={Date.now() + 1}>
+          <QRCode value={QRCodeValue} />
+        </PopupAnimation>
+      </aside>
     </LayoutContainer>
   );
 };

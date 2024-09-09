@@ -3,16 +3,12 @@ import { CreatorInterface } from "../types";
 import { buildGeneralURL } from "../utils";
 import "./index.css";
 
-interface CreatorInformationProps extends CreatorInterface {
-  className?: string;
-}
-
 export const CreatorInformation = ({
   username,
   avatar,
   className,
   preAvatar,
-}: CreatorInformationProps) => {
+}: CreatorInterface) => {
   return (
     <div className={twMerge("flex flex-col gap-2 items-center", className)}>
       {preAvatar && (

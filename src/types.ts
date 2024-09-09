@@ -1,19 +1,17 @@
-export interface AssetInterface {
-  image: string;
+export interface ArtInterface {
+  _id: string;
   title: string;
-  description: string;
+  image: string;
+  orientation: string;
+  avatar: string;
+  username: string;
 }
 
 export interface CreatorInterface {
   avatar?: string;
   username: string;
   preAvatar?: string;
-}
-
-export interface ArtInterface {
-  _id: string;
-  asset: AssetInterface;
-  creator: CreatorInterface;
+  className: string;
 }
 
 export interface APIResponseInterface {

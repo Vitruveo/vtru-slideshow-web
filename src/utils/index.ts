@@ -20,27 +20,13 @@ export const getSeconds = () => {
   return 20;
 };
 
-export const getLayout = () => {
+export const getSlideshowId = () => {
   const url = new URL(window.location.href);
-  const layout = url.searchParams.get("layout") as
-    | "horizontal"
-    | "vertical"
-    | null;
+  const slideshowId = url.searchParams.get("slideshow");
 
-  if (layout) {
-    return layout;
+  if (slideshowId) {
+    return slideshowId;
   }
 
-  return "horizontal";
-};
-
-export const getNudity = () => {
-  const url = new URL(window.location.href);
-  const nudity = url.searchParams.get("nudity") as "yes" | "no" | null;
-
-  if (nudity === "yes") {
-    return nudity;
-  }
-
-  return "no";
+  return "";
 };

@@ -11,13 +11,15 @@ import {
 } from "../components";
 
 export const HorizontalLayout = ({
-  asset,
-  creator,
+  avatar,
+  image,
+  username,
+  title,
   QRCodeValue,
   preAsset,
   preAvatar,
 }: LayoutInterface) => {
-  const assetSrc = buildAssetURL(asset.image);
+  const assetSrc = buildAssetURL(image);
 
   return (
     <LayoutContainer>
@@ -46,11 +48,11 @@ export const HorizontalLayout = ({
             />
             <CreatorInformation
               className="max-w-[12vw] self-center"
-              username={creator.username}
-              avatar={creator.avatar}
+              username={username}
+              avatar={avatar}
               preAvatar={preAvatar}
             />
-            <Description description={asset.title} />
+            <Description description={title} />
           </div>
         </SlideLeftAnimation>
 
