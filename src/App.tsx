@@ -6,8 +6,10 @@ import { HorizontalLayout } from "./layouts/HorizontalLayout";
 import { buildAssetURL, getSlideshowId } from "./utils";
 import { VerticalLayout } from "./layouts/VerticalLayout";
 import { API_URL, SEARCH_URL } from "./constants";
+import packageInfo from "../package.json";
 
 export default function App() {
+  console.log("Version: ", packageInfo.version);
   const [arts, setArts] = useState<ArtInterface[]>([]);
   const [time, setTime] = useState<number>(0);
   const [display, setDisplay] = useState("");
