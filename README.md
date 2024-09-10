@@ -9,7 +9,7 @@ Crie um arquivo **.env** com a seguinte configuração:
 ```
   VITE_ASSET_STORAGE_URL=
   VITE_GENERAL_STORAGE_URL=
-  VITE_STORE_URL=
+  VITE_SEARCH_URL=
   VITE_API_URL=
 ```
 
@@ -22,6 +22,7 @@ Defina o tempo de progresso entre as imagens passando o parâmetro `time` na URL
 ```
 http://localhost:5173?time=10
 ```
+
 (Mínimo de 5 segundos)
 
 ### Alteração do Layout
@@ -35,11 +36,13 @@ http://localhost:5173?layout=vertical
 ### Exemplos de URL
 
 - **Tempo de Progresso**:
+
   ```
   http://localhost:5173?time=8
   ```
 
 - **Layout Vertical**:
+
   ```
   http://localhost:5173?layout=vertical
   ```
@@ -48,4 +51,5 @@ http://localhost:5173?layout=vertical
   ```
   http://localhost:5173?time=12&layout=vertical
   ```
+
 ---
