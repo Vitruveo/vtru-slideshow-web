@@ -1,0 +1,67 @@
+name: Deploy Site for QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/*.yaml
+      - src/**/*.css
+      - src/**/*.ts
+      - src/**/*.tsx
+      - src/**/*.png
+      - src/**/*.jpg
+      - src/**/*.svg
+      - src/**/*.woff2
+      - public/**/*.jpg
+      - public/**/*.png
+      - public/**/*.json
+      - index.html
+      - package.json
+      - package-lock.json
+
+jobs:
+  build:
+    name: Building
+    runs-on: ubuntu-latest
+    environment: qa
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+          VITE_BASE_URL_SEARCH: ${{ vars.VITE_BASE_URL_SEARCH }}
+          VITE_ASSET_STORAGE_URL: ${{ vars.VITE_ASSET_STORAGE_URL }}
+          VITE_GENERAL_STORAGE_URL: ${{ vars.VITE_GENERAL_STORAGE_URL }}
+      - name: Getting project info
+        id: project-info
+        run: node tools/info.js
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ steps.project-info.outputs.version }}
+          REPOSITORY: vitruveo.store.web
+          UPDATE_TOKEN: ${{ secrets.UPDATE_TOKEN }}
+          UPDATE_URL: ${{ secrets.UPDATE_URL }}
+          REPOSITORY_IMAGE: ${{ vars.REPOSITORY_IMAGE }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG.qa -t $REGISTRY/$REPOSITORY:latest.qa -f Dockerfile.production --network host .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG.qa
+          docker push $REGISTRY/$REPOSITORY:latest.qa
+          curl -X "POST" -H 'Content-Type: application/json' -d "{ \"token\": \"$UPDATE_TOKEN\", \"image\": \"$REPOSITORY_IMAGE:$IMAGE_TAG.qa\", \"service\": \"vitruveo-store_store\"}" $UPDATE_URL
