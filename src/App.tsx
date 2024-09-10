@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { APIResponseInterface, ArtInterface } from "./types";
 import { Loading } from "./components/Loading";
@@ -7,16 +6,39 @@ import { buildAssetURL, getSlideshowId } from "./utils";
 import { VerticalLayout } from "./layouts/VerticalLayout";
 import { API_URL, SEARCH_URL } from "./constants";
 import packageInfo from "../package.json";
+import DefaultLayout from "./layouts/DefaultLayout";
+
+type WindowOrientation = "horizontal" | "vertical";
 
 export default function App() {
   console.log("Version: ", packageInfo.version);
+
+  const [allArts, setAllArts] = useState<ArtInterface[]>([]);
   const [arts, setArts] = useState<ArtInterface[]>([]);
   const [time, setTime] = useState<number>(0);
   const [display, setDisplay] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [currentArtIndex, setCurrentArtIndex] = useState(0);
+  const [windowOrientation, setWindowOrientation] =
+    useState<WindowOrientation>("horizontal");
 
   const slideshowId = getSlideshowId();
+
+  const checkOrientation = () => {
+    if (window.innerWidth > window.innerHeight) {
+      setWindowOrientation("horizontal");
+    } else {
+      setWindowOrientation("vertical");
+    }
+  };
+
+  useEffect(() => {
+    checkOrientation();
+    window.addEventListener("resize", checkOrientation);
+    return () => {
+      window.removeEventListener("resize", checkOrientation);
+    };
+  }, []);
 
   /* Buscar as imagens da API */
   useEffect(() => {
@@ -27,7 +49,7 @@ export default function App() {
         );
         const { data } = (await response.json()) as APIResponseInterface;
 
-        setArts(data.assets);
+        setAllArts(data.assets);
         setTime(data.interval);
         setDisplay(data.display.toLowerCase());
 
@@ -39,7 +61,14 @@ export default function App() {
       }
     };
     fetchArts();
-  }, []);
+  }, [slideshowId]);
+
+  useEffect(() => {
+    const filteredArts = allArts.filter(
+      (art) => art.orientation === windowOrientation
+    );
+    setArts(filteredArts);
+  }, [allArts, windowOrientation]);
 
   useEffect(() => {
     if (arts.length > 0) {
@@ -50,9 +79,7 @@ export default function App() {
     }
   }, [arts, time]);
 
-  if (isLoading || arts.length < 1) {
-    return <Loading />;
-  }
+  if (isLoading) return <Loading />;
 
   /** Só devem ser calculados após o load */
   const currentArt = arts[currentArtIndex];
@@ -64,7 +91,9 @@ export default function App() {
   const preAssetImage = buildAssetURL(arts[nextArtIndex]?.image);
   const preAvatarImage = arts[nextArtIndex]?.avatar;
 
-  if (currentArt.orientation === "vertical") {
+  if (arts.length === 0) return <DefaultLayout QrCode={QRCodeValue} />;
+
+  if (windowOrientation === "vertical") {
     return (
       <VerticalLayout
         {...currentArt}
