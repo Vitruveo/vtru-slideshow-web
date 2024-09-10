@@ -12,7 +12,7 @@ export const BackgroundOverlay = ({ src }: BackgroundOverlayProps) => {
   return (
     <img
       src={src}
-      className="absolute inset-0 w-full h-full -z-10 brightness-[0.4] object-cover"
+      className="absolute inset-0 w-full h-full -z-10 brightness-[0.4] object-cover blur"
     />
   );
 };

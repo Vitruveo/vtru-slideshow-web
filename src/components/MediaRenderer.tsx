@@ -19,7 +19,13 @@ export const MediaRenderer = ({ src }: MediaRendererProps) => {
   }
 
   if (isImage) {
-    return <img src={src} alt="asset" className="w-full h-full object-cover object-center" />;
+    return (
+      <img
+        src={src}
+        alt="asset"
+        className="w-full h-full object-cover object-center"
+      />
+    );
   }
 
   return <h1>Unsupported media type</h1>;

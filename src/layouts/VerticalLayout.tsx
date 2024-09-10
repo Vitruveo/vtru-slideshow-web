@@ -41,7 +41,7 @@ export const VerticalLayout = ({
       </main>
 
       {display !== "hide" && (
-        <aside className="w-[20vw] flex flex-col justify-between gap-8">
+        <aside className="w-[20vw] flex flex-col justify-between gap-8 p-8">
           <SlideLeftAnimation delay={0.2} key={Date.now()}>
             <div className="flex flex-col gap-4 items-center">
               <img
