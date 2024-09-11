@@ -31,7 +31,7 @@ export const VerticalLayout = ({
         maxHeight: "100%",
       }}
     >
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-between w-full p-2">
         <PopupAnimation key={Date.now() + 1}>
           <CreatorInformation
             className="max-w-[18vw] self-center"
@@ -46,7 +46,7 @@ export const VerticalLayout = ({
         </div>
 
         <PopupAnimation key={Date.now() + 2}>
-          <QRCode value={QRCodeValue} />
+          <QRCode value={QRCodeValue} windowOrientation="vertical" />
         </PopupAnimation>
       </div>
     </footer>

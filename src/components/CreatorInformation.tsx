@@ -24,7 +24,7 @@ export const CreatorInformation = ({
           className="w-full aspect-square object-cover rounded-full bg-white"
         />
       )}
-      <h2 className="max-w-full text-center">{username}</h2>
+      <h2 className="max-w-full text-center mb-2">{username}</h2>
     </div>
   );
 };

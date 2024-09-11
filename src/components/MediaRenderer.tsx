@@ -12,7 +12,7 @@ export const MediaRenderer = ({ src }: MediaRendererProps) => {
         <source
           src={src}
           type="video/mp4"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-contain object-center"
         />
       </video>
     );
@@ -23,7 +23,7 @@ export const MediaRenderer = ({ src }: MediaRendererProps) => {
       <img
         src={src}
         alt="asset"
-        className="w-full h-full object-cover object-center"
+        className="w-full h-full object-contain object-center"
       />
     );
   }

@@ -32,10 +32,10 @@ export const HorizontalLayout = ({
       }}
     >
       <SlideLeftAnimation delay={0.2} key={Date.now()}>
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-12 items-center">
           <img
             src="vitruveo-logo.png"
-            className="flex-1 object-contain max-w-[50%]"
+            className="flex-1 object-contain w-[80%]"
           />
           <CreatorInformation
             className="max-w-[12vw] self-center"
@@ -48,7 +48,7 @@ export const HorizontalLayout = ({
       </SlideLeftAnimation>
 
       <PopupAnimation key={Date.now() + 1}>
-        <QRCode value={QRCodeValue} />
+        <QRCode value={QRCodeValue} windowOrientation="horizontal" />
       </PopupAnimation>
     </aside>
   );

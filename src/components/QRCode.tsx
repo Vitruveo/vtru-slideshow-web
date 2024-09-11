@@ -4,15 +4,23 @@ import { IconCamera } from "@tabler/icons-react";
 interface QRCodeProps {
   size?: number;
   value: string;
+  windowOrientation: string;
 }
 
-export const QRCode = ({ size = 128, value }: QRCodeProps) => {
+export const QRCode = ({
+  size = 128,
+  value,
+  windowOrientation,
+}: QRCodeProps) => {
   const logoSize = size * 0.25;
 
   return (
-    <div className="flex flex-col gap-4 items-center max-w-[40%] mx-auto">
+    <div className="flex flex-col gap-4 items-center mx-auto qrCode">
       <div className="flex items-center gap-2">
-        <IconCamera color="white" size={40} />
+        <IconCamera
+          color="white"
+          size={windowOrientation === "vertical" ? "3vw" : "1.8vw"}
+        />
         <p style={{ whiteSpace: "nowrap" }}>Scan QR Code</p>
       </div>
       <QRCodeSVG
