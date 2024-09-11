@@ -63,8 +63,6 @@ export const HorizontalLayout = ({
         }}
       />
 
-      <BackgroundOverlay src={assetSrc} />
-
       <div style={{ display: "flex", padding: "2.0837%", gap: "2.0837%" }}>
         {display === "left/up" ? (
           <AsideContent />
@@ -74,14 +72,17 @@ export const HorizontalLayout = ({
         )}
 
         <main
-          className="flex flex-col w-full h-screen m-0 p-0"
+          className="flex flex-col w-full h-full m-0 p-0"
           style={{
             maxWidth: "100%",
             maxHeight: "100%",
+            width: "78.125vw", // 3000 / 3840 * 100
+            height: "92.5926vh", // 2000 / 2160 * 100
           }}
         >
-          <PopupAnimation className="h-full" key={Date.now()}>
+          <PopupAnimation className="h-full relative" key={Date.now()}>
             <MediaRenderer src={assetSrc} />
+            <BackgroundOverlay src={assetSrc} />
           </PopupAnimation>
         </main>
 

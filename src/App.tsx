@@ -115,7 +115,13 @@ export default function App() {
   const preAssetImage = buildAssetURL(arts[nextArtIndex]?.image);
   const preAvatarImage = arts[nextArtIndex]?.avatar;
 
-  if (arts.length === 0) return <DefaultLayout QrCode={QRCodeValue} />;
+  if (arts.length === 0)
+    return (
+      <DefaultLayout
+        QrCode={QRCodeValue}
+        windowOrientation={windowOrientation}
+      />
+    );
 
   if (windowOrientation === "vertical") {
     return (

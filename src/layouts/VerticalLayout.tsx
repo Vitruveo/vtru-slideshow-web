@@ -25,7 +25,7 @@ export const VerticalLayout = ({
 
   const FooterContent = () => (
     <footer
-      className="h-[20%] flex gap-8 p-8 bg-[rgba(0,0,0,0.67)] justify-center"
+      className="h-[20%] flex gap-8 p-0 bg-[rgba(0,0,0,0.67)] justify-center"
       style={{
         maxWidth: "100%",
         maxHeight: "100%",
@@ -62,8 +62,6 @@ export const VerticalLayout = ({
         }}
       />
 
-      <BackgroundOverlay src={assetSrc} />
-
       <div
         style={{
           display: "flex",
@@ -85,8 +83,9 @@ export const VerticalLayout = ({
             maxHeight: "100%",
           }}
         >
-          <PopupAnimation className="mx-auto w-fit" key={Date.now()}>
+          <PopupAnimation className="h-full relative" key={Date.now()}>
             <MediaRenderer src={assetSrc} />
+            <BackgroundOverlay src={assetSrc} />
           </PopupAnimation>
         </main>
         {display === "right/down" ? (
