@@ -1,3 +1,6 @@
+export type WindowOrientation = "horizontal" | "vertical";
+export type DisplayOptions = "alternate" | "left/up" | "right/down" | "hide";
+
 export interface ArtInterface {
   _id: string;
   title: string;
@@ -19,7 +22,7 @@ export interface APIResponseInterface {
   message: string;
   transaction: string;
   data: {
-    display: string;
+    display: DisplayOptions;
     interval: number;
     assets: ArtInterface[];
   };
@@ -29,5 +32,6 @@ export interface LayoutInterface extends Omit<ArtInterface, "_id"> {
   QRCodeValue: string;
   preAsset: string;
   preAvatar?: string;
-  display: string;
+  display: DisplayOptions;
+  alternativeSetting: number;
 }

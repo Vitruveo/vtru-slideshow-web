@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { APIResponseInterface, ArtInterface } from "./types";
+import {
+  APIResponseInterface,
+  ArtInterface,
+  DisplayOptions,
+  WindowOrientation,
+} from "./types";
 import { Loading } from "./components/Loading";
 import { HorizontalLayout } from "./layouts/HorizontalLayout";
 import { buildAssetURL, getSlideshowId } from "./utils";
@@ -8,19 +13,21 @@ import { API_URL, SEARCH_URL } from "./constants";
 import packageInfo from "../package.json";
 import DefaultLayout from "./layouts/DefaultLayout";
 
-type WindowOrientation = "horizontal" | "vertical";
-
 export default function App() {
   console.log("Version: ", packageInfo.version);
 
   const [allArts, setAllArts] = useState<ArtInterface[]>([]);
   const [arts, setArts] = useState<ArtInterface[]>([]);
   const [time, setTime] = useState<number>(0);
-  const [display, setDisplay] = useState("");
+  const [display, setDisplay] = useState<DisplayOptions>("alternate");
   const [isLoading, setIsLoading] = useState(true);
   const [currentArtIndex, setCurrentArtIndex] = useState(0);
   const [windowOrientation, setWindowOrientation] =
     useState<WindowOrientation>("horizontal");
+  const [alternateSettings, setAlternateSettings] = useState({
+    horizontal: 0,
+    vertical: 0,
+  });
 
   const slideshowId = getSlideshowId();
 
@@ -51,7 +58,7 @@ export default function App() {
 
         setAllArts(data.assets);
         setTime(data.interval);
-        setDisplay(data.display.toLowerCase());
+        setDisplay(data.display.toLowerCase() as DisplayOptions);
 
         setTimeout(() => {
           setIsLoading(false);
@@ -79,6 +86,22 @@ export default function App() {
     }
   }, [arts, time]);
 
+  useEffect(() => {
+    if (display === "alternate") {
+      if (windowOrientation === "horizontal") {
+        setAlternateSettings((prevSettings) => ({
+          ...prevSettings,
+          horizontal: prevSettings.horizontal + 1,
+        }));
+      } else {
+        setAlternateSettings((prevSettings) => ({
+          ...prevSettings,
+          vertical: prevSettings.vertical + 1,
+        }));
+      }
+    }
+  }, [currentArtIndex, display, windowOrientation]);
+
   if (isLoading) return <Loading />;
 
   /** Só devem ser calculados após o load */
@@ -101,6 +124,7 @@ export default function App() {
         QRCodeValue={QRCodeValue}
         preAvatar={preAvatarImage}
         display={display}
+        alternativeSetting={alternateSettings.vertical}
       />
     );
   }
@@ -112,6 +136,7 @@ export default function App() {
       QRCodeValue={QRCodeValue}
       preAvatar={preAvatarImage}
       display={display}
+      alternativeSetting={alternateSettings.horizontal}
     />
   );
 }
