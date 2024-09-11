@@ -64,6 +64,7 @@ export const HorizontalLayout = ({
       />
 
       <BackgroundOverlay src={assetSrc} />
+
       <div style={{ display: "flex", padding: "2.0837%", gap: "2.0837%" }}>
         {display === "left/up" ||
           (display === "alternate" && alternativeSetting % 2 === 0 && (

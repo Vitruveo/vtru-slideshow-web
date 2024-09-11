@@ -1,4 +1,4 @@
-import { PopupAnimation, SlideLeftAnimation } from "../animations";
+import { PopupAnimation } from "../animations";
 import {
   BackgroundOverlay,
   MediaRenderer,
@@ -11,16 +11,46 @@ import { LayoutInterface } from "../types";
 import { buildAssetURL } from "../utils";
 
 export const VerticalLayout = ({
-  image,
-  title,
-  username,
   avatar,
+  username,
+  title,
+  image,
   QRCodeValue,
   preAsset,
   preAvatar,
   display,
+  alternativeSetting,
 }: LayoutInterface) => {
   const assetSrc = buildAssetURL(image);
+
+  const FooterContent = () => (
+    <footer
+      className="h-[20%] flex gap-8 p-8 bg-[rgba(0,0,0,0.67)] justify-center"
+      style={{
+        maxWidth: "100%",
+        maxHeight: "100%",
+      }}
+    >
+      <div className="flex items-center justify-between w-full">
+        <PopupAnimation key={Date.now() + 1}>
+          <CreatorInformation
+            className="max-w-[18vw] self-center"
+            username={username}
+            avatar={avatar}
+            preAvatar={preAvatar}
+          />
+        </PopupAnimation>
+
+        <div className="flex flex-col gap-2">
+          <Description description={title} />
+        </div>
+
+        <PopupAnimation key={Date.now() + 2}>
+          <QRCode value={QRCodeValue} />
+        </PopupAnimation>
+      </div>
+    </footer>
+  );
 
   return (
     <LayoutContainer>
@@ -34,35 +64,34 @@ export const VerticalLayout = ({
 
       <BackgroundOverlay src={assetSrc} />
 
-      <main className="flex-1 grid grid-rows-[minmax(50%,auto),auto]">
-        <PopupAnimation className="mx-auto w-fit" key={Date.now()}>
-          <MediaRenderer src={assetSrc} />
-        </PopupAnimation>
-      </main>
-
-      {display !== "hide" && (
-        <aside className="w-[20vw] flex flex-col justify-between gap-8 p-8">
-          <SlideLeftAnimation delay={0.2} key={Date.now()}>
-            <div className="flex flex-col gap-4 items-center">
-              <img
-                src="vitruveo-logo.png"
-                className="flex-1 object-contain max-w-[50%]"
-              />
-              <CreatorInformation
-                className="max-w-[12vw] self-center"
-                username={username}
-                avatar={avatar}
-                preAvatar={preAvatar}
-              />
-              <Description description={title} />
-            </div>
-          </SlideLeftAnimation>
-
-          <PopupAnimation key={Date.now() + 1}>
-            <QRCode value={QRCodeValue} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          padding: "3.704%",
+          gap: "2%",
+        }}
+      >
+        {display === "left/up" ||
+          (display === "alternate" && alternativeSetting % 2 === 0 && (
+            <FooterContent />
+          ))}
+        <main
+          className="flex justify-center items-center w-full h-full m-0 p-0"
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100%",
+          }}
+        >
+          <PopupAnimation className="mx-auto w-fit" key={Date.now()}>
+            <MediaRenderer src={assetSrc} />
           </PopupAnimation>
-        </aside>
-      )}
+        </main>
+        {display === "right/down" ||
+          (display === "alternate" && alternativeSetting % 2 !== 0 && (
+            <FooterContent />
+          ))}
+      </div>
     </LayoutContainer>
   );
 };
