@@ -72,10 +72,12 @@ export const VerticalLayout = ({
           gap: "2%",
         }}
       >
-        {display === "left/up" ||
-          (display === "alternate" && alternativeSetting % 2 === 0 && (
-            <FooterContent />
-          ))}
+        {display === "left/up" ? (
+          <FooterContent />
+        ) : (
+          display === "alternate" &&
+          alternativeSetting % 2 === 0 && <FooterContent />
+        )}
         <main
           className="flex justify-center items-center w-full h-full m-0 p-0"
           style={{
@@ -87,10 +89,12 @@ export const VerticalLayout = ({
             <MediaRenderer src={assetSrc} />
           </PopupAnimation>
         </main>
-        {display === "right/down" ||
-          (display === "alternate" && alternativeSetting % 2 !== 0 && (
-            <FooterContent />
-          ))}
+        {display === "right/down" ? (
+          <FooterContent />
+        ) : (
+          display === "alternate" &&
+          alternativeSetting % 2 !== 0 && <FooterContent />
+        )}
       </div>
     </LayoutContainer>
   );

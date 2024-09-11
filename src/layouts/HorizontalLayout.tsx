@@ -66,10 +66,13 @@ export const HorizontalLayout = ({
       <BackgroundOverlay src={assetSrc} />
 
       <div style={{ display: "flex", padding: "2.0837%", gap: "2.0837%" }}>
-        {display === "left/up" ||
-          (display === "alternate" && alternativeSetting % 2 === 0 && (
-            <AsideContent />
-          ))}
+        {display === "left/up" ? (
+          <AsideContent />
+        ) : (
+          display === "alternate" &&
+          alternativeSetting % 2 === 0 && <AsideContent />
+        )}
+
         <main
           className="flex flex-col w-full h-screen m-0 p-0"
           style={{
@@ -81,10 +84,13 @@ export const HorizontalLayout = ({
             <MediaRenderer src={assetSrc} />
           </PopupAnimation>
         </main>
-        {display === "right/down" ||
-          (display === "alternate" && alternativeSetting % 2 !== 0 && (
-            <AsideContent />
-          ))}
+
+        {display === "right/down" ? (
+          <AsideContent />
+        ) : (
+          display === "alternate" &&
+          alternativeSetting % 2 !== 0 && <AsideContent />
+        )}
       </div>
     </LayoutContainer>
   );

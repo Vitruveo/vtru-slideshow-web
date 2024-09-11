@@ -57,7 +57,7 @@ export default function App() {
         const { data } = (await response.json()) as APIResponseInterface;
 
         setAllArts(data.assets);
-        setTime(data.interval);
+        setTime(Number.isNaN(data.interval) ? 10 : data.interval);
         setDisplay(data.display.toLowerCase() as DisplayOptions);
 
         setTimeout(() => {
@@ -72,7 +72,8 @@ export default function App() {
 
   useEffect(() => {
     const filteredArts = allArts.filter(
-      (art) => art.orientation === windowOrientation
+      (art) =>
+        art.orientation === windowOrientation || art.orientation === "square"
     );
     setArts(filteredArts);
   }, [allArts, windowOrientation]);
