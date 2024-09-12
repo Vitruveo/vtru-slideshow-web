@@ -121,3 +121,18 @@ body {
     line-height: 100px;
   }
 }
+
+/* Resolução personalizada - 2349px */
+@media (min-width: 1921px) and (max-width: 2349px) and (orientation: landscape) {
+  .qrCode {
+    width: 350px;
+    height: 350px;
+  }
+  p {
+    font-size: 30px;
+  }
+  h2 {
+    font-size: 30px;
+    line-height: 36px;
+  }
+}
