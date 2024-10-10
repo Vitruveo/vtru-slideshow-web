@@ -34,4 +34,5 @@ export interface LayoutInterface extends Omit<ArtInterface, "_id"> {
   preAvatar?: string;
   display: DisplayOptions;
   alternativeSetting: number;
+  hasStack?: boolean;
 }
