@@ -25,7 +25,7 @@ export const HorizontalLayout = ({
 
   const AsideContent = () => (
     <aside
-      className="w-[20%] flex flex-col justify-between gap-8 p-8 bg-[rgba(0,0,0,0.67)]"
+      className="w-[20%] flex flex-col justify-between gap-8 p-8 bg-[rgba(0,0,0,0.67)] max-[300px]:hidden"
       style={{
         maxWidth: "100%",
         maxHeight: "100%",

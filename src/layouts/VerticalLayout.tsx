@@ -25,7 +25,7 @@ export const VerticalLayout = ({
 
   const FooterContent = () => (
     <footer
-      className="h-[20%] flex gap-8 p-0 bg-[rgba(0,0,0,0.67)] justify-center"
+      className="h-[20%] flex gap-8 p-0 bg-[rgba(0,0,0,0.67)] justify-center max-[300px]:hidden"
       style={{
         maxWidth: "100%",
         maxHeight: "100%",
