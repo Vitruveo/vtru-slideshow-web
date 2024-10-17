@@ -20,12 +20,15 @@ export const VerticalLayout = ({
   preAvatar,
   display,
   alternativeSetting,
+  hasStack,
 }: LayoutInterface) => {
   const assetSrc = buildAssetURL(image);
 
   const FooterContent = () => (
     <footer
-      className="h-[20%] flex gap-8 p-0 bg-[rgba(0,0,0,0.67)] justify-center"
+      className={`h-[20%] flex gap-8 p-0 bg-[rgba(0,0,0,0.67)] justify-center ${
+        hasStack ? "small:hidden" : ""
+      }`}
       style={{
         maxWidth: "100%",
         maxHeight: "100%",

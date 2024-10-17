@@ -7,7 +7,7 @@ import {
 } from "./types";
 import { Loading } from "./components/Loading";
 import { HorizontalLayout } from "./layouts/HorizontalLayout";
-import { buildAssetURL, getSlideshowId } from "./utils";
+import { buildAssetURL, getSlideshowId, getHasStack } from "./utils";
 import { VerticalLayout } from "./layouts/VerticalLayout";
 import { API_URL, SEARCH_URL } from "./constants";
 import packageInfo from "../package.json";
@@ -30,6 +30,7 @@ export default function App() {
   });
 
   const slideshowId = getSlideshowId();
+  const hasStack = getHasStack();
 
   const checkOrientation = () => {
     if (window.innerWidth > window.innerHeight) {
@@ -132,6 +133,7 @@ export default function App() {
         preAvatar={preAvatarImage}
         display={display}
         alternativeSetting={alternateSettings.vertical}
+        hasStack={!!hasStack}
       />
     );
   }
@@ -144,6 +146,7 @@ export default function App() {
       preAvatar={preAvatarImage}
       display={display}
       alternativeSetting={alternateSettings.horizontal}
+      hasStack={!!hasStack}
     />
   );
 }
