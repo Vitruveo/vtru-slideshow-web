@@ -1,11 +1,14 @@
 interface MediaRendererProps {
   src: string;
+  isImage: boolean;
+  isVideo: boolean;
 }
 
-export const MediaRenderer = ({ src }: MediaRendererProps) => {
-  const isImage = src.match(/\.(jpeg|jpg|gif|png|webp)$/) != null;
-  const isVideo = src.match(/\.(mp4|webm|ogg)$/) != null;
-
+export const MediaRenderer = ({
+  src,
+  isImage,
+  isVideo,
+}: MediaRendererProps) => {
   if (isVideo) {
     return (
       <video autoPlay muted loop>

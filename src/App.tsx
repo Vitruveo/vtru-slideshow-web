@@ -48,6 +48,22 @@ export default function App() {
     };
   }, []);
 
+  const getAssetWatermark = async ({
+    assetId,
+    format,
+  }: {
+    assetId: string;
+    format: string;
+  }) => {
+    const response = await fetch(
+      `${API_URL}/assets/public/watermark/${assetId}?format=${format}`
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch watermark");
+    }
+    return await response.arrayBuffer();
+  };
+
   /* Buscar as imagens da API */
   useEffect(() => {
     const fetchArts = async () => {
@@ -57,7 +73,53 @@ export default function App() {
         );
         const { data } = (await response.json()) as APIResponseInterface;
 
-        setAllArts(data.assets);
+        const assetsWithWatermark = await Promise.allSettled(
+          data.assets.map(async (asset) => {
+            if (asset._id) {
+              try {
+                let imageUrl = asset.image;
+                const isImage =
+                  imageUrl.match(/\.(jpeg|jpg|gif|png|webp)$/) != null;
+                const isVideo = imageUrl.match(/\.(mp4|webm|ogg)$/) != null;
+
+                if (isImage) {
+                  const watermarkBuffer = await getAssetWatermark({
+                    assetId: asset._id,
+                    format: "exhibition",
+                  });
+                  const blob = new Blob([watermarkBuffer], {
+                    type: "image/jpeg",
+                  });
+                  imageUrl = URL.createObjectURL(blob);
+
+                  const img = new window.Image();
+                  img.src = imageUrl;
+                }
+
+                return {
+                  ...asset,
+                  path: asset.image,
+                  isImage,
+                  isVideo,
+                  image: imageUrl,
+                };
+              } catch (error) {
+                return null;
+              }
+            }
+            return null;
+          })
+        );
+
+        const successfulWatermarks = assetsWithWatermark
+          .filter(
+            (result) => result.status === "fulfilled" && result.value !== null
+          )
+          .map(
+            (result) => (result as PromiseFulfilledResult<ArtInterface>).value
+          );
+
+        setAllArts(successfulWatermarks);
         setTime(Number.isNaN(data.interval) ? 10 : data.interval);
         setDisplay(data.display.toLowerCase() as DisplayOptions);
 
@@ -113,7 +175,12 @@ export default function App() {
   const nextArtIndex =
     currentArtIndex === arts.length - 1 ? 0 : currentArtIndex + 1;
 
-  const preAssetImage = buildAssetURL(arts[nextArtIndex]?.image);
+  const preAssetImage = buildAssetURL({
+    image: arts[nextArtIndex]?.image,
+    path: arts[nextArtIndex]?.path,
+    isVideo: arts[nextArtIndex]?.isVideo,
+  });
+
   const preAvatarImage = arts[nextArtIndex]?.avatar;
 
   if (arts.length === 0)

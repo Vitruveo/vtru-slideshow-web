@@ -7,6 +7,9 @@ export interface ArtInterface {
   image: string;
   orientation: string;
   avatar: string;
+  path: string;
+  isImage: boolean;
+  isVideo: boolean;
   username: string;
 }
 

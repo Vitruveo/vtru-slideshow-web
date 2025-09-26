@@ -1,7 +1,15 @@
 import { ASSET_STORAGE_URL, GENERAL_STORAGE_URL } from "../constants";
 
-export const buildAssetURL = (path: string) => {
-  return `${ASSET_STORAGE_URL}/${path}`;
+export const buildAssetURL = ({
+  path,
+  image,
+  isVideo,
+}: {
+  path: string;
+  image: string;
+  isVideo: boolean;
+}) => {
+  return isVideo ? `${ASSET_STORAGE_URL}/${path}` : image;
 };
 
 export const buildGeneralURL = (path: string) => {

@@ -15,6 +15,9 @@ export const HorizontalLayout = ({
   image,
   username,
   title,
+  path,
+  isImage,
+  isVideo,
   QRCodeValue,
   preAsset,
   preAvatar,
@@ -22,7 +25,7 @@ export const HorizontalLayout = ({
   alternativeSetting,
   hasStack,
 }: LayoutInterface) => {
-  const assetSrc = buildAssetURL(image);
+  const assetSrc = buildAssetURL({ image, path, isVideo });
 
   const AsideContent = () => (
     <aside
@@ -84,7 +87,7 @@ export const HorizontalLayout = ({
           }}
         >
           <PopupAnimation className="h-full relative" key={Date.now()}>
-            <MediaRenderer src={assetSrc} />
+            <MediaRenderer isImage={isImage} isVideo={isVideo} src={assetSrc} />
             <BackgroundOverlay src={assetSrc} />
           </PopupAnimation>
         </main>

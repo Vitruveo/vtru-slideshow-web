@@ -15,6 +15,9 @@ export const VerticalLayout = ({
   username,
   title,
   image,
+  path,
+  isImage,
+  isVideo,
   QRCodeValue,
   preAsset,
   preAvatar,
@@ -22,7 +25,7 @@ export const VerticalLayout = ({
   alternativeSetting,
   hasStack,
 }: LayoutInterface) => {
-  const assetSrc = buildAssetURL(image);
+  const assetSrc = buildAssetURL({ image, path, isVideo });
 
   const FooterContent = () => (
     <footer
@@ -87,7 +90,7 @@ export const VerticalLayout = ({
           }}
         >
           <PopupAnimation className="h-full relative" key={Date.now()}>
-            <MediaRenderer src={assetSrc} />
+            <MediaRenderer isImage={isImage} isVideo={isVideo} src={assetSrc} />
             <BackgroundOverlay src={assetSrc} />
           </PopupAnimation>
         </main>
